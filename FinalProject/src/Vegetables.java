@@ -19,7 +19,6 @@ class Vegetable extends Food {
 
     @Override
     public String toString() {
-        return getName() + " - Meat - Quantity: " + getQuantity() + ", Price: $" + getPrice();
+        return getName() + " - $" + getPrice();
     }
 }
-

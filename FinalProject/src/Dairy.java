@@ -19,6 +19,6 @@ class Dairy extends Food {
 
     @Override
     public String toString() {
-        return getName() + " - Dairy - Quantity: " + getQuantity() + ", Price: $" + getPrice();
+        return getName() + " - $" + getPrice();
     }
 }

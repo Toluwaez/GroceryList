@@ -1,6 +1,19 @@
 {
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "/Users/tolu/javafx-sdk-20.0.2/**/*.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+                "lib/**/*.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/**/*.jar",
+                "/Users/tolu/CSCI3331/javafx-sdk-20.0.2/**/*.jar"
+        ],
+        "exclude": [
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx-swt.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.base.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.controls.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.fxml.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.web.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.swing.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.media.jar",
+                "/Users/tolu/javafx-sdk-20.0.2/lib/javafx.graphics.jar"
+        ]
+}
 }

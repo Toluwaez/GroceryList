@@ -19,6 +19,6 @@ class Fruit extends Food {
 
     @Override
     public String toString() {
-        return getName() + " - $" + getPrice();
+        return String.format("%s - $%.2f", getName(), getPrice());
     }
 }

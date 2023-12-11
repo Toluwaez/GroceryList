@@ -44,7 +44,11 @@ The total cost of the shopping list is displayed and updated dynamically.
 Reagan
 - For the UI I referenced the JavaFX docs
 - For the drag and drop I referenced the JavaFX docs along with [code found on Github](https://gist.github.com/jewelsea/7821196).
-- For the context menu I referenced the JavaFX docs
+- For the context menu I referenced the JavaFX docs.
+
+Toluwanimi 
+- for the reset/remove functions i referenced JavaFX docs and stackOverflow
+- for the search implementation i referenced stackoverflow: https://stackoverflow.com/questions/13880638/how-do-i-pick-up-the-enter-key-being-pressed-in-javafx2
 
 ## Project Details
 ### Tolu

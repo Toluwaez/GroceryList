@@ -22,10 +22,12 @@ The total cost of the shopping list is displayed and updated dynamically.
 - Each group member contributed to different aspects of the code:
 - **Reagan Wix**: Designed user interface.
 - **Reagan Wix**: Implemented the drag-and-drop functionality.
+- **Toluwanimi Oladeleajose**: Implemented the remove function of a food item in users list.
 - **Reagan Wix**: Implemented the context menu.
 - **Toluwanimi Oladeleajose**: Handled error handling and user-friendly messages.
 - **Toluwanimi Oladeleajose**: Created interfaces, abstract classes, and subclasses.
 - **Toluwanimi Oladeleajose**: Implemented search function and filter by category functions.
+- **Toluwanimi Oladeleajose**: Implemented the reset function of a food item in users list.
 - **Reagan & Toluwanimi**: Worked on the design and layout of the graphical interface.
 - **Reagan & Toluwanimi**: Implemented total function
  

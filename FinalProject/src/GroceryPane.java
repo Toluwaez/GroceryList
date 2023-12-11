@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -22,7 +23,12 @@ class GroceryPane {
 
     // List to store all groceries
     private static ObservableList<Food> allGroceries = FXCollections.observableArrayList();
-    private static boolean manualAddition = false;
+
+    // Linked List for yourList
+    private static LinkedList<Food> linkedYourList = new LinkedList<>();
+
+    // Total
+    private static Label total = new Label("Total: ");
 
     public static VBox createGroceryPane() {
         
@@ -74,6 +80,14 @@ class GroceryPane {
         // List of Vegetable Items
         ObservableList<Food> vegetableItems = FXCollections.observableArrayList(carrot, greenBeans, bellPepper, springOnions, onion, tomatoe);
 
+        // Baked Goods
+        Food bread = new BakedGoods("Bread", 1, 5.50);
+        Food muffin = new BakedGoods("Muffin", 1, 2.00);
+        Food cake = new BakedGoods("Cake", 1, 12.00);
+        Food donut = new BakedGoods("Donut", 1, 2.00);
+        Food cupcake = new BakedGoods("Cupcake", 1, 3.50);
+
+        ObservableList<Food> bakedGoodsItems = FXCollections.observableArrayList(bread, muffin, cake, donut, cupcake);
         /*******************************************************************************************************************/
 
         // Main application
@@ -98,9 +112,6 @@ class GroceryPane {
             // Clear existing items and add dairy items as strings
             groceryList.getItems().clear();
             groceryList.getItems().addAll(dairyItems);
-            // Convert dairyItems to a list of strings before adding to groceryList
-            //List<Food> dairyItemStrings = dairyItems.stream().map(Food::toString).map(Food::parseFromString).collect(Collectors.toList());
-            //groceryList.getItems().addAll(dairyItemStrings);
         });
 
         Button fruitBtn = new Button("Fruit");
@@ -115,9 +126,8 @@ class GroceryPane {
             groceryList.getItems().clear();
         
             // Convert fruitItems to a list of strings before adding to groceryList
-            //List<String> fruitItemStrings = fruitItems.stream().map(Food::toString).collect(Collectors.toList());
             groceryList.getItems().addAll(fruitItems);
-            });
+        });
 
         Button meatBtn = new Button("Meat");
         // Button Styling
@@ -131,7 +141,6 @@ class GroceryPane {
             groceryList.getItems().clear();
         
             // Convert meatItems to a list of strings before adding to groceryList
-            //List<String> meatItemStrings = meatItems.stream().map(Food::toString).collect(Collectors.toList());
             groceryList.getItems().addAll(meatItems);
         });
 
@@ -147,8 +156,22 @@ class GroceryPane {
             groceryList.getItems().clear();
         
             // Convert vegetableItems to a list of strings before adding to groceryList
-            //List<Food> vegetableItemStrings = vegetableItems.stream().map(Food::toString).collect(Collectors.toList());
             groceryList.getItems().addAll(vegetableItems);
+        });
+
+        Button bakedGoodsBtn = new Button("Baked Goods");
+        // Button Styling
+        bakedGoodsBtn.setTextAlignment(TextAlignment.CENTER);
+        bakedGoodsBtn.setStyle("-fx-background-color: #613393;");
+        bakedGoodsBtn.setTextFill(Color.WHITE);
+
+        // Set the action for the Baked Goods button
+        bakedGoodsBtn.setOnAction(event -> {
+            // Clear existing items and add baked goods items as strings
+            groceryList.getItems().clear();
+        
+            // Convert bakedGoodsItems to a list of strings before adding to groceryList
+            groceryList.getItems().addAll(bakedGoodsItems);
         });
 
         /*******************************************************************************************************************/
@@ -195,6 +218,7 @@ class GroceryPane {
         allGroceries.addAll(fruitItems);
         allGroceries.addAll(meatItems);
         allGroceries.addAll(vegetableItems);
+        allGroceries.addAll(bakedGoodsItems);
 
         // List of your groceries with label and total
         VBox yourGroceryList = new VBox();
@@ -210,14 +234,8 @@ class GroceryPane {
 
         // List of your groceries
         ListView<Food> yourList = new ListView<>();
-        
-        // Linked List for yourList
-        LinkedList<Food> linkedYourList = new LinkedList<>();
 
-        // Total
-        Label total = new Label("Total: ");
-
-         /*******************************************************************************************************************/
+        /*******************************************************************************************************************/
 
         // Remove button
         Button removeBtn = new Button("Remove");
@@ -232,11 +250,11 @@ class GroceryPane {
             if (selectedItem != null) {
                 yourList.getItems().remove(selectedItem);
                 linkedYourList.remove(selectedItem);
-                updateTotalLabel(total, linkedYourList);
+                updateTotalLabel(total);
             }
         });
 
-         /*******************************************************************************************************************/
+        /*******************************************************************************************************************/
 
         // Reset button
         Button resetBtn = new Button("Reset");
@@ -248,17 +266,17 @@ class GroceryPane {
         // Set the action for the Reset button
         resetBtn.setOnAction(event -> {
            yourList.getItems().clear();
-              linkedYourList.clear();
-             updateTotalLabel(total, linkedYourList);
+            linkedYourList.clear();
+            updateTotalLabel(total);
         });
 
-         /*******************************************************************************************************************/
+        /*******************************************************************************************************************/
 
         // Method call to add items from the list view to the linked list whenever the listview is changes
         yourList.getItems().addListener((ListChangeListener<Food>) change -> {
             linkedYourList.clear();
             linkedYourList.addAll(yourList.getItems());
-            updateTotalLabel(total, linkedYourList);
+            updateTotalLabel(total);
         });
         
         // MIME type used to transfer information between two objects
@@ -290,45 +308,40 @@ class GroceryPane {
             if (dragboard.hasContent(SERIALIZED_MIME_TYPE)) {
                 // Assuming that the items in yourList are the string representations of Food objects
                 Food foodItem = (Food) dragboard.getContent(SERIALIZED_MIME_TYPE);
-                Food newFoodItem = null;
-        
-                // Create a new instance based on the type of food
-                if (foodItem instanceof Dairy) {
-                    newFoodItem = new Dairy(foodItem.getName(), foodItem.getQuantity(), foodItem.getPrice());
-                } else if (foodItem instanceof Fruit) {
-                    newFoodItem = new Fruit(foodItem.getName(), foodItem.getQuantity(), foodItem.getPrice());
-                } else if (foodItem instanceof Meat) {
-                    newFoodItem = new Meat(foodItem.getName(), foodItem.getQuantity(), foodItem.getPrice());
-                } else if (foodItem instanceof Vegetable) {
-                    newFoodItem = new Vegetable(foodItem.getName(), foodItem.getQuantity(), foodItem.getPrice());
-                }
-        
-                // Update the quantity if the item already exists in yourList
-        if (linkedYourList.contains(newFoodItem)) {
-            int index = linkedYourList.indexOf(newFoodItem);
-            Food existingItem = linkedYourList.get(index);
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-        } else {
-            // Otherwise, add a new item with quantity 1
-            yourList.getItems().add(newFoodItem);
-            linkedYourList.add(newFoodItem);
-        }
+                yourList.getItems().add(foodItem);
+                linkedYourList.add(foodItem);
 
-        success = true;
-
-        // Update the total label
-        updateTotalLabel(total, linkedYourList);
-    }
+                success = true;
+            }
         
             event.setDropCompleted(success);
             event.consume();
         });
 
         /*******************************************************************************************************************/
+
+        // When you right click an object in your list, you are able to change the quantity
+        yourList.setCellFactory(lv -> {
+            ListCell<Food> cell = new ListCell<>();
+            ContextMenu contextMenu = createContextMenu(cell);
+            cell.textProperty().bind(cell.itemProperty().asString());
+            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                if (isNowEmpty) {
+                    cell.setContextMenu(null);
+                } else {
+                    cell.setContextMenu(contextMenu);
+                }
+            });
+            return cell;
+        });
+
+
+
+        /*******************************************************************************************************************/
     
         // Adding everything to the main V Box
         vBox.getChildren().addAll(navBar, hbox);
-        navBar.getChildren().addAll(dairyBtn, fruitBtn, meatBtn, vegetableBtn, searchBar, resetBtn, removeBtn);
+        navBar.getChildren().addAll(dairyBtn, fruitBtn, meatBtn, vegetableBtn, bakedGoodsBtn, searchBar, resetBtn, removeBtn);
         hbox.getChildren().addAll(foodItemsList, yourGroceryList);
         foodItemsList.getChildren().addAll(groceriesLabel, groceryList);
         yourGroceryList.getChildren().addAll(yourListLabel, yourList, total);
@@ -336,27 +349,64 @@ class GroceryPane {
         return vBox;
     }
 
-     /*******************************************************************************************************************/
-     //Couldnt fully get the total to work... pls take a look at it. 
-    private static void updateTotalLabel(Label totalLabel, List<Food> foodItems) {
-        try {
-            double newTotal = foodItems.stream().mapToDouble(Food::getTotalPrice).sum();
-            totalLabel.setText(String.format("Total: $%.2f", newTotal));
-        } catch (Exception e) {
-            // Catch any exception that occurs
-            e.printStackTrace(); // Print the stack trace for debugging purposes
-    
-            // Displayong user-friendly error message
-            showErrorDialog("An error occurred while updating the total. Please try again.");
+    /*******************************************************************************************************************/
+    // Calculate total 
+
+    private static String calculateTotal(LinkedList<Food> foodItems) {
+        double sum = 0.00;
+
+        for (Food food : foodItems){
+            System.out.println(food.getName());
+            double price = food.getPrice();
+            System.out.println("Price: " + price);
+            double quantity = food.getQuantity();
+            System.out.println("Quantity: " + quantity);
+            sum += price * quantity;
         }
+
+        System.out.println(sum);
+        System.out.println("End of Calculation");
+
+        String total = ("Total: $" + Double.toString(sum));
+        return total;
     }
 
-    private static void showErrorDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    /*******************************************************************************************************************/
+    // Update Total Label
+    private static void updateTotalLabel(Label total){
+        total.setText(calculateTotal(linkedYourList));
     }
-      
+
+    /*******************************************************************************************************************/
+    // Create Context Menu
+
+    private static ContextMenu createContextMenu(ListCell<Food> cell) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem editQuantity = new MenuItem("Edit Quantity");
+
+        editQuantity.setOnAction(event -> {
+            cell.textProperty().unbind();
+            Food selectedFoodItem = cell.getItem();
+            TextInputDialog dialog = new TextInputDialog(String.valueOf(selectedFoodItem.getQuantity()));
+            dialog.setTitle("Edit Quantity");
+            dialog.setHeaderText("Enter the quantity:");
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(newQuantity -> {
+                try {
+                    int newQuantityValue = Integer.parseInt(newQuantity);
+                    selectedFoodItem.setQuantity(newQuantityValue);
+                    cell.setText(selectedFoodItem.toString());
+                    cell.textProperty().bind(cell.itemProperty().asString());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input for quantity.");
+                }
+            });
+        });
+
+        contextMenu.getItems().add(editQuantity);
+        return contextMenu;
+    }
+ 
 }   

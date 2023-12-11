@@ -15,8 +15,8 @@
             "name": "App",
             "request": "launch",
             "mainClass": "App",
-            "projectName": "GroceryList_40dc5f4b",
-            "vmArgs": "--module-path \"/Volumes/Macintosh HD/Users/tolu/CSCI3331/javafx-sdk-20.0.2/lib\" --add-modules javafx.controls,javafx.fxml --enable-preview"
+            "projectName": "GroceryList_912475a8",
+            "vmArgs": "--module-path C:\\Users\\rae03\\OneDrive\\Desktop\\ObjectOriented\\javafx-sdk-20.0.2\\lib --add-modules javafx.controls,javafx.fxml --enable-preview"
         }
     ]
 }

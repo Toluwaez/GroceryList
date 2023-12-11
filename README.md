@@ -46,7 +46,7 @@ Reagan
 
 ## Project Details
 ### Tolu
-Approximate hours spent on the project: 40 hours
+Approximate hours spent on the project: 55 hours
 
 ### Reagan
 Approximate hours spent on the project: 60 hours

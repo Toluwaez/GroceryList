@@ -1,4 +1,4 @@
 // Category enum
 enum Category {
-    DAIRY, FRUIT, MEAT, VEGETABLE
+    DAIRY, FRUIT, MEAT, VEGETABLE, BAKEDGOOD
 }

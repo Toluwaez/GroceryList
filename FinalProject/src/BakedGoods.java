@@ -1,8 +1,8 @@
-// Concrete class Vegetable extending Food
-class Vegetable extends Food {
+// Concrete class Baked Goods extending Food
+class BakedGoods extends Food {
     private String name;
 
-    public Vegetable(String name, int quantity, double price) {
+    public BakedGoods(String name, int quantity, double price) {
         super(quantity, price);
         this.name = name;
     }
@@ -14,7 +14,7 @@ class Vegetable extends Food {
 
     @Override
     public Category getCategory() {
-        return Category.VEGETABLE;
+        return Category.BAKEDGOOD;
     }
 
     @Override
